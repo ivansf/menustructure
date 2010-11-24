@@ -29,4 +29,15 @@ Pass the structure to the view
 	$this->request->response = View::Factory('welcome/menu')
 		->set('menu', MenuStructure::factory($items)->get_menu());
 
+Options
+
+You can pass an array with options. The available ones are:
+
+	link_prepend - string - string goes before the uri.
+	link_to_id - boolean - uses id instead of link.
+
+Example
+
+	MenuStructure::factory($items, array('link_prepend' => 'extraurl/', 'link_to_id' => true))->get_menu()
+
 You should be able to print the an entire navigation tree using a single query.
