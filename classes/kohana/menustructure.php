@@ -3,8 +3,7 @@
 abstract class Kohana_MenuStructure {
 
 	protected $html;
-
-
+	protected $items;
 	/**
 	 * Creates a new MenuStructure object.
 	 *
@@ -27,8 +26,12 @@ abstract class Kohana_MenuStructure {
 	protected function __construct($items) {
 		$html = '';
 		$root = 0;
-		$this->items = $items;
 
+		if (!is_array($items))
+			$this->items = (array)$items;
+		else
+			$this->items = $items;
+		
 		foreach ( $this->items as $item )
 			$children[$item['parent_id']][] = $item;
 
