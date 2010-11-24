@@ -97,6 +97,56 @@ abstract class Kohana_MenuStructure {
 		return $html;
 	}
 
+
+	/**
+	 * Build the list as a select box
+	 *
+	 * @return string
+	 */
+	function get_select_options($selected = null) {
+
+		$html = '';
+		$root = 0;
+
+		if (!is_array($this->items)) {
+
+			// Assuming the menu is an ORM object
+			$items_holder = array();
+			foreach ($this->items as $i)
+				$items_holder[] = array('id' => $i->id, 'parent_id' => $i->parent_id, 'title' => $i->title,
+					'link' => $i->link);
+			$this->items = $items_holder;
+		}
+
+		foreach ($this->items as $item)
+			$children[$item['parent_id']][] = $item;
+
+		$loop = !empty($children[$root]);
+		$parent = $root;
+		$stack = array();
+
+		$html .= '<select id="menu_structure" name="menu_structure">' . "\n"; // opening the list
+		//if (!$selected)
+			$html .= '<option value="0">No parent</option>';
+		$extra = '';
+		while ($loop && (($option = each($children[$parent])) || ($parent > $root))) {
+			if (!$option) {
+				$parent = array_pop($stack);
+				$extra = substr($extra, 0, -1);
+				//$html .= '' . "\n" . '</option>' . "\n";
+			} else if (!empty($children[$option['value']['id']])) {
+				$html .= $this->_build_option($option['value'], $extra, $selected) . "\n";
+				//$html .= '<optgroup label="submenu">' . "\n";
+				$extra .= '-';
+				array_push($stack, $option['value']['parent_id']);
+				$parent = $option['value']['id'];
+			} else
+				$html .= $this->_build_option($option['value'], $extra, $selected);
+		}
+		$html .= '</select>'; // opening the list
+		return $html;
+	}
+
 	/**
 	 * Returns the menu list in an array.
 	 *
@@ -129,6 +179,14 @@ abstract class Kohana_MenuStructure {
 			$link .= $item['link'];
 
 		return Html::anchor($link, $item['title']);
+	}
+
+	function _build_option($item, $extra, $selected = null) {
+		$str_selected = '';
+		if ($selected == $item['id'])
+			$str_selected = ' selected="selected"';
+		return sprintf('<option value="%1$d" %4$s>%2$s %3$s</option>' . "\n",
+			$item['id'], $extra, $item['title'], $str_selected);
 	}
 
 }
