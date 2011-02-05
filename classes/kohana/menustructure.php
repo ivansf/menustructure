@@ -29,7 +29,6 @@ abstract class Kohana_MenuStructure {
 	 * @param   array  configuration
 	 * @options array
 	 * 		link_prepend string - string goes before the uri.
-	 * 		link_to_id boolean - uses id instead of link.
 	 * @return  MenuStructure
 	 */
 	public static function factory($items, $options = array()) {
@@ -175,12 +174,8 @@ abstract class Kohana_MenuStructure {
 		// checking if we want to append something to the link
 		if (isset($this->options['link_prepend']))
 			$link .= $this->options['link_prepend'];
-
-		// Are we linking to the id instead of the link
-		if (isset($this->options['link_to_id']))
-			$link .= $item['id'];
-		else
-			$link .= $key;
+		
+		$link .= $key;
 
 		return Html::anchor($link, $item['title']);
 	}

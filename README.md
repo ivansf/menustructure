@@ -14,30 +14,39 @@ Enable the module in the bootstrap
 		'menustructure'  => MODPATH.'menustructure',  // enables menu structure
 	));
 
-Create the following array in your controller. I'm pretty sure you want to get it from a database.
+### Building the data
+
+As an example, create the following array in your controller. (I'm pretty sure you want to get it from a database).
 
 	$items = array();
-	$items[] = array('id' => 1, 'parent_id' => 0, 'title' => 'test 1', 'link' => 'welcome/test');
-	$items[] = array('id' => 2, 'parent_id' => 0, 'title' => 'test 1', 'link' => 'test');
-	$items[] = array('id' => 3, 'parent_id' => 2, 'title' => 'test 2', 'link' => '#');
-	$items[] = array('id' => 5, 'parent_id' => 0, 'title' => 'test 2', 'link' => '#');
-	$items[] = array('id' => 6, 'parent_id' => 5, 'title' => 'test 2', 'link' => '#');
-	$items[] = array('id' => 6, 'parent_id' => 5, 'title' => 'test 123', 'link' => '#');
+	$items['first/add'] = array('id' => 1, 'parent_id' => 0, 'title' => 'test 1', 'body' => 'body of main link');
+	$items['test'] = array('id' => 2, 'parent_id' => 0, 'title' => 'test 1', 'body' => 'body from test');
+	$items['linkmore'] = array('id' => 3, 'parent_id' => 2, 'title' => 'test 2');
+	$items[''] = array('id' => 5, 'parent_id' => 0, 'title' => 'Index', 'body' => 'Body of the index!');
+	$items['content/secondary'] = array('id' => 6, 'parent_id' => 5, 'title' => 'test 2');
+	$items['another/path/see'] = array('id' => 6, 'parent_id' => 5, 'title' => 'test 123');
 
 Pass the structure to the view
 
+	$current = '';
+	$current .= $seg1 ? $seg1 : '';
+	$current .= $seg2 ? ('/' . $seg2): '';
+	$current .= $seg3 ? ('/' . $seg3): '';
+	$body = isset($items[$current]['body']) ? $items[$current]['body'] : '';
 	$this->request->response = View::Factory('welcome/menu')
-		->set('menu', MenuStructure::factory($items)->get_menu());
+		->set('menu', MenuStructure::factory($items)->get_menu())
+		->set('body', $body);
 
-Options
+(TIP: Make sure your routes allow that many segments)
+
+# Options
 
 You can pass an array with options. The available ones are:
 
 	link_prepend - string - string goes before the uri.
-	link_to_id - boolean - uses id instead of link.
 
 Example
 
-	MenuStructure::factory($items, array('link_prepend' => 'extraurl/', 'link_to_id' => true))->get_menu()
+	MenuStructure::factory($items, array('link_prepend' => 'extraurl/'))->get_menu()
 
-You should be able to print the an entire navigation tree using a single query.
+You should be able to print the entire navigation tree using a single query.
