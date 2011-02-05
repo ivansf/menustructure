@@ -18,13 +18,13 @@ Enable the module in the bootstrap
 
 As an example, create the following array in your controller. (I'm pretty sure you want to get it from a database).
 
-	$items = array();
-	$items['first/add'] = array('id' => 1, 'parent_id' => 0, 'title' => 'test 1', 'body' => 'body of main link');
-	$items['test'] = array('id' => 2, 'parent_id' => 0, 'title' => 'test 1', 'body' => 'body from test');
-	$items['linkmore'] = array('id' => 3, 'parent_id' => 2, 'title' => 'test 2');
-	$items[''] = array('id' => 5, 'parent_id' => 0, 'title' => 'Index', 'body' => 'Body of the index!');
-	$items['content/secondary'] = array('id' => 6, 'parent_id' => 5, 'title' => 'test 2');
-	$items['another/path/see'] = array('id' => 6, 'parent_id' => 5, 'title' => 'test 123');
+	$item = array();
+	$items[] = array('id' => 1, 'parent_id' => 0, 'title' => 'test 1', 'link' => 'welcome/test');
+	$items[] = array('id' => 2, 'parent_id' => 0, 'title' => 'test 1', 'link' => 'test');
+	$items[] = array('id' => 3, 'parent_id' => 2, 'title' => 'test 2', 'link' => '#');
+	$items[] = array('id' => 5, 'parent_id' => 0, 'title' => 'test 2', 'link' => '#');
+	$items[] = array('id' => 6, 'parent_id' => 5, 'title' => 'test 2', 'link' => '#');
+	$items[] = array('id' => 6, 'parent_id' => 5, 'title' => 'test 123', 'link' => '#');
 
 Pass the structure to the view
 

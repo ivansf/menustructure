@@ -69,11 +69,8 @@ abstract class Kohana_MenuStructure {
 			$this->items = $items_holder;
 		}
 
-		foreach ($this->items as $key => $item) {
-			$item['key'] = $key;
+		foreach ($this->items as $item)
 			$children[$item['parent_id']][] = $item;
-		}
-
 
 		$loop = !empty($children[$root]);
 		$parent = $root;
@@ -86,15 +83,14 @@ abstract class Kohana_MenuStructure {
 				$parent = array_pop($stack);
 				$html .= '</ul>' . "\n" . '</li>' . "\n";
 			} else if (!empty($children[$option['value']['id']])) {
-				$html .= '<li>' . $this->_build_link($option['value'], $option['value']['key']) . "\n";
+				$html .= '<li>' . $this->_build_link($option['value']) . "\n";
 				$html .= '<ul class="submenu">' . "\n";
 
 				array_push($stack, $option['value']['parent_id']);
 				$parent = $option['value']['id'];
-			} else {
-				$html .= '<li>' . $this->_build_link($option['value'], $option['value']['key']) .
+			} else
+				$html .= '<li>' . $this->_build_link($option['value']) .
 						'</li>' . "\n";
-			}
 		}
 		$html .= '</ul>'; // opening the list
 		return $html;
@@ -169,13 +165,17 @@ abstract class Kohana_MenuStructure {
 	 * @param string $title
 	 * @return string
 	 */
-	function _build_link($item, $key) {
+	function _build_link($item) {
 		$link = '';
 		// checking if we want to append something to the link
 		if (isset($this->options['link_prepend']))
 			$link .= $this->options['link_prepend'];
-		
-		$link .= $key;
+
+		// Are we linking to the id instead of the link
+		if (isset($this->options['link_to_id']))
+			$link .= $item['id'];
+		else
+			$link .= $item['link'];
 
 		return Html::anchor($link, $item['title']);
 	}
