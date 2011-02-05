@@ -16,7 +16,7 @@ Enable the module in the bootstrap
 
 Create the following array in your controller. I'm pretty sure you want to get it from a database.
 
-	$item = array();
+	$items = array();
 	$items[] = array('id' => 1, 'parent_id' => 0, 'title' => 'test 1', 'link' => 'welcome/test');
 	$items[] = array('id' => 2, 'parent_id' => 0, 'title' => 'test 1', 'link' => 'test');
 	$items[] = array('id' => 3, 'parent_id' => 2, 'title' => 'test 2', 'link' => '#');
