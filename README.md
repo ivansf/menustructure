@@ -18,7 +18,7 @@ Enable the module in the bootstrap
 
 As an example, create the following array in your controller. (I'm pretty sure you want to get it from a database).
 
-	$item = array();
+	$items = array();
 	$items[] = array('id' => 1, 'parent_id' => 0, 'title' => 'test 1', 'link' => 'welcome/test');
 	$items[] = array('id' => 2, 'parent_id' => 0, 'title' => 'test 1', 'link' => 'test');
 	$items[] = array('id' => 3, 'parent_id' => 2, 'title' => 'test 2', 'link' => '#');
@@ -28,25 +28,18 @@ As an example, create the following array in your controller. (I'm pretty sure y
 
 Pass the structure to the view
 
-	$current = '';
-	$current .= $seg1 ? $seg1 : '';
-	$current .= $seg2 ? ('/' . $seg2): '';
-	$current .= $seg3 ? ('/' . $seg3): '';
-	$body = isset($items[$current]['body']) ? $items[$current]['body'] : '';
 	$this->request->response = View::Factory('welcome/menu')
-		->set('menu', MenuStructure::factory($items)->get_menu())
-		->set('body', $body);
-
-(TIP: Make sure your routes allow that many segments)
+		->set('menu', MenuStructure::factory($items)->get_menu()));
 
 # Options
 
 You can pass an array with options. The available ones are:
 
 	link_prepend - string - string goes before the uri.
+	link_to_id - boolean - if you want to render links as the id.
 
-Example
+### Example
 
-	MenuStructure::factory($items, array('link_prepend' => 'extraurl/'))->get_menu()
+	MenuStructure::factory($items, array('link_prepend' => 'extraurl/', 'link_to_id' => true))->get_menu()
 
 You should be able to print the entire navigation tree using a single query.
