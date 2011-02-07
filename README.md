@@ -1,6 +1,9 @@
 # What it does?
 
-menustructure simply creates a tree navigation based on a multi-dimentional array
+MenuStructure simply creates a tree navigation based on a multi-dimentional array.
+
+I wrote a tutorial for using this module for building a simple website:
+http://ivansotof.com/2011/02/using-menustructure-module-ko3
 
 # Installation
 
