@@ -83,14 +83,16 @@ abstract class Kohana_MenuStructure {
 				$parent = array_pop($stack);
 				$html .= '</ul>' . "\n" . '</li>' . "\n";
 			} else if (!empty($children[$option['value']['id']])) {
-				$html .= '<li>' . $this->_build_link($option['value']) . "\n";
+				$active = ($option['value']['link'] == $this->options['current_path']) ? true : false;
+				$html .= '<li>' . $this->_build_link($option['value'], $active) . "\n";
 				$html .= '<ul class="submenu">' . "\n";
-
 				array_push($stack, $option['value']['parent_id']);
 				$parent = $option['value']['id'];
-			} else
-				$html .= '<li>' . $this->_build_link($option['value']) .
+			} else {
+				$active = ($option['value']['link'] == $this->options['current_path']) ? true : false;
+				$html .= '<li>' . $this->_build_link($option['value'], $active) .
 						'</li>' . "\n";
+			}
 		}
 		$html .= '</ul>'; // opening the list
 		return $html;
@@ -165,8 +167,11 @@ abstract class Kohana_MenuStructure {
 	 * @param string $title
 	 * @return string
 	 */
-	function _build_link($item) {
+	function _build_link($item, $active = false) {
 		$link = '';
+		$attributes = array();
+		if ($active)
+			$attributes['class'] = 'active';
 		// checking if we want to append something to the link
 		if (isset($this->options['link_prepend']))
 			$link .= $this->options['link_prepend'];
@@ -177,7 +182,7 @@ abstract class Kohana_MenuStructure {
 		else
 			$link .= $item['link'];
 
-		return Html::anchor($link, $item['title']);
+		return Html::anchor($link, $item['title'], $attributes);
 	}
 
 	function _build_option($item, $extra, $selected = null) {

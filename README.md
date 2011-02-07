@@ -37,6 +37,7 @@ You can pass an array with options. The available ones are:
 
 	link_prepend - string - string goes before the uri.
 	link_to_id - boolean - if you want to render links as the id.
+	current_path - string - Pass the current path in order to mark the active link.
 
 ### Example
 
