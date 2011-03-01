@@ -126,7 +126,8 @@ abstract class Kohana_MenuStructure {
 	 * @return string
 	 */
 	function get_menu() {
-
+		if (!isset($this->options['current_path']))
+			$this->options['current_path'] = '';
 		$html = '';
 		$root = 0;
 
